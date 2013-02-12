@@ -3,6 +3,11 @@
 #include <iostream>
 #include <string>
 
+void fill(std::vector<int>& vec, int start, int end) {
+  for (int i = start; i < end; i++)
+    vec.push_back(i);
+}
+
 Puzzle make_puzzle() {
   Puzzle puzzle(ROWS);
   for (int i = 0; i < ROWS; i++) {
@@ -12,6 +17,7 @@ Puzzle make_puzzle() {
       sq.row = i;
       sq.col = j;
       sq.val = EMPTY;
+      fill(sq.possible_vals, 1, 10);
     }
   }
   return puzzle;

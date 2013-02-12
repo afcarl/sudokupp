@@ -22,4 +22,3 @@ Puzzle solve_puzzle(const Puzzle& puzzle) {
   //    c. Otherwise, return the puzzle.
   return puzzle;
 }
-

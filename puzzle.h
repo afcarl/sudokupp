@@ -12,6 +12,7 @@ struct Square {
   int row;
   int col;
   int val;
+  std::vector<int> possible_vals;
 };
 
 typedef std::vector<Square> Row;
