@@ -41,3 +41,11 @@ std::ostream& write_puzzle(const Puzzle& puzzle, std::ostream& stream) {
   }
   return stream;
 }
+
+Puzzle copy_puzzle(const Puzzle& puzzle) {
+  Puzzle blank = make_puzzle();
+  for (int i = 0; i < ROWS; i++)
+    for (int j = 0; j < COLS; j++)
+      blank[i][j] = puzzle[i][j];
+  return blank;
+}

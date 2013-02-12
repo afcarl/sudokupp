@@ -26,4 +26,7 @@ std::istream& read_puzzle(Puzzle& puzzle, std::istream& stream);
 // Write a puzzle to an input stream.
 std::ostream& write_puzzle(const Puzzle& puzzle, std::ostream& stream);
 
+// Make a copy of a puzzle.
+Puzzle copy_puzzle(const Puzzle& puzzle);
+
 #endif
