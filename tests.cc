@@ -1,7 +1,14 @@
 #include "tests.h"
 
-void test(bool (*func)(void), std::string name) {
-  if (!func()) {
-    std::cout << "Test failed: " << name << std::endl;
-  }
+#include <stdexcept>
+
+std::string test_name;
+
+void deftest(std::string name) {
+  test_name = name;
+}
+
+void assert(bool pred, std::string desc) {
+  if (!pred)
+    throw std::logic_error(test_name + " (" + desc + ")");
 }
