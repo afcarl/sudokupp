@@ -45,8 +45,32 @@ bool solved(const Puzzle& puzzle) {
   return true;
 }
 
-bool eliminate(Puzzle& puzzle) {
+bool eliminate_row(Puzzle& puzzle, int row, int col) {
   return false;
+}
+
+bool eliminate_column(Puzzle& puzzle, int row, int col) {
+  return false;
+}
+
+bool eliminate_group(Puzzle& puzzle, int row, int col) {
+  return false;
+}
+
+bool eliminate(Puzzle& puzzle, int row, int col) {
+  bool changed = false;
+  changed |= eliminate_row(puzzle, row, col);
+  changed |= eliminate_column(puzzle, row, col);
+  changed |= eliminate_group(puzzle, row, col);
+  return changed;
+}
+
+bool eliminate(Puzzle& puzzle) {
+  bool changed = false;
+  for (int i = 0; i < ROWS; i++)
+    for (int j = 0; j < COLS; j++)
+      changed |= eliminate(puzzle, i, j);
+  return changed;
 }
 
 void eliminate(Puzzle& puzzle, Square& guess) {

@@ -95,12 +95,28 @@ void test_solved() {
                              "912345678")), "missing value");
 }
 
+void test_eliminate_row() {
+}
+
+void test_eliminate_column() {
+}
+
+void test_eliminate_group() {
+}
+
+void test_eliminate() {
+}
+
 int main() {
   try {
     test_row_full();
     test_col_full();
     test_group_full();
     test_solved();
+    test_eliminate_row();
+    test_eliminate_column();
+    test_eliminate_group();
+    test_eliminate();
   } catch (std::logic_error err) {
     std::cout << "Test failed: " << err.what() << std::endl;
   }
