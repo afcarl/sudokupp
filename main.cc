@@ -13,7 +13,7 @@ int main(int argc, char* argv[]) {
   std::cout << "Puzzle:" << std::endl;
   write_puzzle(puzzle, std::cout);
 
-  Puzzle solution = solve_puzzle(puzzle);
+  Puzzle solution = solve(puzzle);
   std::cout << std::endl << "Solution:" << std::endl;
   write_puzzle(puzzle, std::cout);
 

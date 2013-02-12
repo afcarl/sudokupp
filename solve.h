@@ -5,7 +5,7 @@
 
 // Solves a puzzle and returns the solution.
 // Throws an invalid_argument exception if the puzzle is not solvable.
-Puzzle solve_puzzle(const Puzzle& puzzle);
+Puzzle solve(Puzzle puzzle);
 
 // Determines whether a puzzle is solved.
 bool solved(const Puzzle& puzzle);
@@ -15,7 +15,13 @@ bool solved(const Puzzle& puzzle);
 // Throws an invalid_argument exception if a contradiction is found.
 bool eliminate(Puzzle& puzzle);
 
+// Eliminate a possible value from a square.
+void eliminate(Puzzle& puzzle, const Square& guess);
+
 // Choose a square and guess its value.
 Square guess(const Puzzle& puzzle);
+
+// Apply a guess to a puzzle and return the resulting board.
+Puzzle apply_guess(const Puzzle& puzzle, const Square& guess);
 
 #endif
