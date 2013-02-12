@@ -7,5 +7,5 @@ all: sudoku
 clean:
 	rm -rf *.o sudoku
 
-sudoku: main.o board.o
-	$(CXX) main.o board.o -o sudoku
+sudoku: main.o puzzle.o
+	$(CXX) main.o puzzle.o -o sudoku

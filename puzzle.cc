@@ -1,12 +1,12 @@
-#include "board.h"
+#include "puzzle.h"
 
 #include <iostream>
 #include <string>
 
-Board make_board() {
-  Board board(ROWS);
+Puzzle make_puzzle() {
+  Puzzle puzzle(ROWS);
   for (int i = 0; i < ROWS; i++) {
-    board[i] = Row(COLS);
+    puzzle[i] = Row(COLS);
     for (int j = 0; j < COLS; j++) {
       Square sq;
       sq.row = i;
@@ -14,26 +14,26 @@ Board make_board() {
       sq.val = EMPTY;
     }
   }
-  return board;
+  return puzzle;
 }
 
-std::istream& read_board(Board& board, std::istream& stream) {
+std::istream& read_puzzle(Puzzle& puzzle, std::istream& stream) {
   for (int i = 0; i < ROWS; i++) {
     std::string row;
     if (!(stream >> row))
       return stream;
     for (int j = 0; j < COLS; j++) {
-      board[i][j] = Square();
-      board[i][j].row = i;
-      board[i][j].col = j;
-      board[i][j].val = row[j] - '0';
+      puzzle[i][j] = Square();
+      puzzle[i][j].row = i;
+      puzzle[i][j].col = j;
+      puzzle[i][j].val = row[j] - '0';
     }
   }
   return stream;
 }
 
-std::ostream& write_board(const Board& board, std::ostream& stream) {
-  for (Board::const_iterator row = board.begin(); row != board.end(); row++) {
+std::ostream& write_puzzle(const Puzzle& puzzle, std::ostream& stream) {
+  for (Puzzle::const_iterator row = puzzle.begin(); row != puzzle.end(); row++) {
     for (Row::const_iterator sq = row->begin(); sq != row->end(); sq++) {
       stream << sq->val;
     }
