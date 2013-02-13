@@ -13,11 +13,11 @@ Puzzle make_puzzle() {
   for (int i = 0; i < ROWS; i++) {
     puzzle[i] = Row(COLS);
     for (int j = 0; j < COLS; j++) {
-      Square sq;
-      sq.row = i;
-      sq.col = j;
-      sq.val = EMPTY;
-      fill(sq.possible_vals, 1, 10);
+      puzzle[i][j] = Square();
+      puzzle[i][j].row = i;
+      puzzle[i][j].col = j;
+      puzzle[i][j].val = EMPTY;
+      fill(puzzle[i][j].possible_vals, 1, 10);
     }
   }
   return puzzle;

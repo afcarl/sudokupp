@@ -1,6 +1,8 @@
 #include "solve.h"
 
 #include <stdexcept>
+#include <iostream>
+#include <cstdlib>
 
 bool sq_order(const Square& left, const Square& right) {
   return left.val < right.val;
@@ -46,11 +48,25 @@ bool solved(const Puzzle& puzzle) {
 }
 
 bool eliminate_row(Puzzle& puzzle, int row, int col) {
-  return false;
+  if (puzzle[row][col].val != EMPTY)
+    return false;
+
+  bool changed = false;
+  for (int j = 0; j < COLS; j++)
+    if (j != col && puzzle[row][j].val != EMPTY)
+      changed |= eliminate(puzzle, row, col, puzzle[row][j].val);
+  return changed;
 }
 
 bool eliminate_column(Puzzle& puzzle, int row, int col) {
-  return false;
+  if (puzzle[row][col].val != EMPTY)
+    return false;
+
+  bool changed = false;
+  for (int i = 0; i < ROWS; i++)
+    if (i != row && puzzle[i][col].val != EMPTY)
+      changed |= eliminate(puzzle, row, col, puzzle[i][col].val);
+  return changed;
 }
 
 bool eliminate_group(Puzzle& puzzle, int row, int col) {
@@ -73,8 +89,28 @@ bool eliminate(Puzzle& puzzle) {
   return changed;
 }
 
-void eliminate(Puzzle& puzzle, Square& guess) {
-  
+bool eliminate(Puzzle& puzzle, int row, int col, int val) {
+  bool changed = false;
+  Square& sq = puzzle[row][col];
+  for (std::vector<int>::iterator iter = sq.possible_vals.begin();
+       iter != sq.possible_vals.end();
+       iter++) {
+    if (*iter == val) {
+      iter = sq.possible_vals.erase(iter);
+      changed = true;
+      break;
+    }
+  }
+  if (sq.possible_vals.size() == 1) {
+    sq.val = sq.possible_vals.front();
+    sq.possible_vals.clear();
+    changed = true;
+  }
+  return changed;
+}
+
+void eliminate(Puzzle& puzzle, const Square& guess) {
+  eliminate(puzzle, guess.row, guess.col, guess.val);
 }
 
 Square guess(const Puzzle& puzzle) {

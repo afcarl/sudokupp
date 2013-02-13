@@ -5,6 +5,12 @@
 #include <iostream>
 #include <stdexcept>
 
+void print(std::vector<int> ints) {
+  for (std::vector<int>::const_iterator i = ints.begin(); i != ints.end(); i++)
+    std::cout << *i;
+  std::cout << std::endl;
+}
+
 Row make_row(std::string row_str) {
   Row row;
   for (std::string::const_iterator ch = row_str.begin();
@@ -14,6 +20,7 @@ Row make_row(std::string row_str) {
     sq.row = 0;
     sq.col = 0;
     sq.val = *ch - '0';
+    fill(sq.possible_vals, 1, 10);
     row.push_back(sq);
   }
   return row;
@@ -96,9 +103,43 @@ void test_solved() {
 }
 
 void test_eliminate_row() {
+  deftest("eliminate_row");
+  Puzzle puzzle = make_puzzle();
+
+  puzzle[3] = make_row("123056709");
+  assert(puzzle[3][7].val == 0, "unknown value");
+  assert(eliminate_row(puzzle, 3, 7), "change didn't occur");
+  assert(puzzle[3][7].val == 0, "still unknown");
+  assert(puzzle[3][7].possible_vals.size() == 2, "elimination");
+  assert(puzzle[3][7].possible_vals[0] == 4, "elimination");
+  assert(puzzle[3][7].possible_vals[1] == 8, "elimination");
+  assert(!eliminate_row(puzzle, 3, 7), "do it again---no change");
+
+  puzzle[2] = make_row("123405678");
+  assert(puzzle[2][4].val == 0, "unknown value");
+  assert(eliminate_row(puzzle, 2, 4), "change occurred");
+  assert(puzzle[2][4].val == 9, "update value");
+  assert(puzzle[2][4].possible_vals.empty(), "no possibilities remain");
+  assert(!eliminate_row(puzzle, 2, 4), "again, no change occurred");
 }
 
 void test_eliminate_column() {
+  deftest("eliminate_column");
+  Puzzle puzzle = make_col("123056709", 4);
+  assert(puzzle[3][4].val == 0, "unknown value");
+  assert(eliminate_column(puzzle, 3, 4), "change didn't occur");
+  assert(puzzle[3][4].val == 0, "still unknown");
+  assert(puzzle[3][4].possible_vals.size() == 2, "elimination");
+  assert(puzzle[3][4].possible_vals[0] == 4, "elimination");
+  assert(puzzle[3][4].possible_vals[1] == 8, "elimination");
+  assert(!eliminate_column(puzzle, 3, 4), "do it again---no change");
+
+  puzzle = make_col("123405678", 4);
+  assert(puzzle[4][4].val == 0, "unknown value");
+  assert(eliminate_column(puzzle, 4, 4), "change occurred");
+  assert(puzzle[4][4].val == 9, "update value");
+  assert(puzzle[4][4].possible_vals.empty(), "no possibilities remain");
+  assert(!eliminate_column(puzzle, 4, 4), "again---no change occurred");
 }
 
 void test_eliminate_group() {

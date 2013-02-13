@@ -22,6 +22,7 @@ bool eliminate(Puzzle& puzzle, int row, int col);
 
 // Eliminate a possible value from a square.
 void eliminate(Puzzle& puzzle, const Square& guess);
+bool eliminate(Puzzle& puzzle, int row, int col, int val);
 
 // Choose a square and guess its value.
 Square guess(const Puzzle& puzzle);
