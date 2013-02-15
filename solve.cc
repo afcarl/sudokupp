@@ -104,7 +104,7 @@ bool eliminate(Puzzle& puzzle, int row, int col) {
   return changed;
 }
 
-bool eliminate(Puzzle& puzzle) {
+bool eliminate1(Puzzle& puzzle) {
   bool changed = false;
   for (int i = 0; i < ROWS; i++)
     for (int j = 0; j < COLS; j++)
@@ -112,11 +112,11 @@ bool eliminate(Puzzle& puzzle) {
   return changed;
 }
 
-bool eliminate_to_stable(Puzzle& puzzle) {
+bool eliminate(Puzzle& puzzle) {
   bool changed = false;
   bool ret = false;
   do {
-    changed = eliminate(puzzle);
+    changed = eliminate1(puzzle);
     ret |= changed;
   } while (changed);
   return ret;
@@ -162,7 +162,7 @@ Puzzle apply_guess(const Puzzle& puzzle, const Square& guess) {
 
 Puzzle solve(Puzzle puzzle) {
   while (!solved(puzzle)) {
-    eliminate_to_stable(puzzle);
+    eliminate(puzzle);
     if (solved(puzzle))
       break;
     Square sq = guess(puzzle);

@@ -198,7 +198,7 @@ void test_eliminate() {
   deftest("eliminate square");
   Puzzle puzzle = make_puzzle();
   read_puzzle(puzzle, kPuzzleString);
-  assert(eliminate(puzzle), "change occurred");
+  assert(eliminate1(puzzle), "change occurred");
   assert(puzzle[1][1].val == 2, "value of 1,1");
   assert(puzzle[1][2].val == 1, "value of 1,2");
 }

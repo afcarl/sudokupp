@@ -14,12 +14,12 @@ bool solved(const Puzzle& puzzle);
 // Run elimination on a puzzle.
 // Returns true if the puzzle was modified and false otherwise.
 // Throws an logic_error exception if a contradiction is found.
-bool eliminate(Puzzle& puzzle);
+bool eliminate1(Puzzle& puzzle);
 
 // Repeatedly applies elimination to a puzzle until it becomes stable,
 // i.e. no further changes are possible.  Returns true if any changes
 // were made and false otherwise.
-bool eliminate_to_stable(Puzzle& puzzle);
+bool eliminate(Puzzle& puzzle);
 
 // Run elimination on a particular square.
 // Returns true if the puzzle was modified and false otherwise.
