@@ -15,7 +15,7 @@ int main(int argc, char* argv[]) {
 
   Puzzle solution = solve(puzzle);
   std::cout << std::endl << "Solution:" << std::endl;
-  write_puzzle(puzzle, std::cout);
+  write_puzzle(solution, std::cout);
 
   return 0;
 }

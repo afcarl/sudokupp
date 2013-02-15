@@ -91,11 +91,17 @@ bool eliminate(Puzzle& puzzle, int row, int col) {
 }
 
 bool eliminate(Puzzle& puzzle) {
-  bool changed = false;
-  for (int i = 0; i < ROWS; i++)
-    for (int j = 0; j < COLS; j++)
-      changed |= eliminate(puzzle, i, j);
-  return changed;
+  bool stable = false;
+  bool ret = false;
+  do {
+    bool changed = false;
+    for (int i = 0; i < ROWS; i++)
+      for (int j = 0; j < COLS; j++)
+        changed |= eliminate(puzzle, i, j);
+    stable = !changed;
+    ret |= changed;
+  } while (!stable);
+  return ret;
 }
 
 bool eliminate(Puzzle& puzzle, int row, int col, int val) {
@@ -133,8 +139,8 @@ Puzzle apply_guess(const Puzzle& puzzle, const Square& guess) {
 Puzzle solve(Puzzle puzzle) {
   // // While puzzle is not solved:
   // while (!solved(puzzle)) {
-  //   // 1. Run elimination until there are no changes.
-  //   while (eliminate(puzzle));
+  //   // 1. Run elimination.
+  //   eliminate(puzzle);
   //   if (solved(puzzle))
   //     break;
   //   // 2. Choose a square and make a guess.
@@ -148,5 +154,6 @@ Puzzle solve(Puzzle puzzle) {
   //     eliminate(puzzle, sq);
   //   }
   // }
+  eliminate(puzzle);
   return puzzle;
 }

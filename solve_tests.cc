@@ -5,6 +5,17 @@
 #include <iostream>
 #include <stdexcept>
 
+const std::string kPuzzleString =
+  "086000025"
+  "000003640"
+  "070050000"
+  "015300060"
+  "400905008"
+  "090008570"
+  "000070030"
+  "039200000"
+  "150000490";
+
 void print(std::vector<int> ints) {
   for (std::vector<int>::const_iterator i = ints.begin(); i != ints.end(); i++)
     std::cout << *i;
@@ -161,8 +172,25 @@ void test_eliminate_group() {
   assert(!eliminate_group(puzzle, 4, 4), "again---no change occurred");
 }
 
+void test_eliminate_square() {
+  deftest("eliminate square");
+  Puzzle puzzle = make_puzzle();
+  read_puzzle(puzzle, kPuzzleString);
+  // requires row and column elimination
+  assert(eliminate(puzzle, 1, 1), "change occurred");
+  assert(puzzle[1][1].val == 2, "value of 1,1");
+  // requires row, column, and group elimination
+  assert(eliminate(puzzle, 1, 2), "change occurred");
+  assert(puzzle[1][2].val == 1, "value of 1,2");
+}
+
 void test_eliminate() {
-  
+  deftest("eliminate square");
+  Puzzle puzzle = make_puzzle();
+  read_puzzle(puzzle, kPuzzleString);
+  assert(eliminate(puzzle), "change occurred");
+  assert(puzzle[1][1].val == 2, "value of 1,1");
+  assert(puzzle[1][2].val == 1, "value of 1,2");
 }
 
 int main() {
@@ -174,6 +202,7 @@ int main() {
     test_eliminate_row();
     test_eliminate_column();
     test_eliminate_group();
+    test_eliminate_square();
     test_eliminate();
   } catch (std::logic_error err) {
     std::cout << "Test failed: " << err.what() << std::endl;
