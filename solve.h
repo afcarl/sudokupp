@@ -4,16 +4,16 @@
 #include "puzzle.h"
 
 // Solves a puzzle and returns the solution.
-// Throws an invalid_argument exception if the puzzle is not solvable.
+// Throws an logic_error exception if the puzzle is not solvable.
 Puzzle solve(Puzzle puzzle);
 
 // Determines whether a puzzle is solved.
-// Throws an invalid_argument exception if a contradiction is found.
+// Throws an logic_error exception if a contradiction is found.
 bool solved(const Puzzle& puzzle);
 
 // Run elimination on a puzzle.
 // Returns true if the puzzle was modified and false otherwise.
-// Throws an invalid_argument exception if a contradiction is found.
+// Throws an logic_error exception if a contradiction is found.
 bool eliminate(Puzzle& puzzle);
 
 // Repeatedly applies elimination to a puzzle until it becomes stable,
@@ -23,7 +23,7 @@ bool eliminate_to_stable(Puzzle& puzzle);
 
 // Run elimination on a particular square.
 // Returns true if the puzzle was modified and false otherwise.
-// Throws an invalid_argument exception if a contradiction is found.
+// Throws an logic_error exception if a contradiction is found.
 bool eliminate(Puzzle& puzzle, int row, int col);
 
 // Eliminate a possible value from a square.

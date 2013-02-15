@@ -43,7 +43,7 @@ void test_row_full() {
   try {
     row_full(make_row("123436789"));
     assert(false, "duplicate value");
-  } catch (std::invalid_argument) {
+  } catch (std::logic_error) {
   }
   assert(!row_full(make_row("123406789")), "missing value");
 }
@@ -62,7 +62,7 @@ void test_col_full() {
   try {
     col_full(make_col("321987436", 2), 2);
     assert(false, "duplicate value");
-  } catch (std::invalid_argument) {
+  } catch (std::logic_error) {
   }
   assert(!col_full(make_col("321987406", 2), 2), "missing value");
 }
@@ -82,7 +82,7 @@ void test_group_full() {
   try {
     group_full(make_group("321987436", 2, 3), 2, 3);
     assert(false, "duplicate value");
-  } catch (std::invalid_argument) {
+  } catch (std::logic_error) {
   }
   assert(!group_full(make_group("321987406", 2, 3), 2, 3), "missing value");
 }
@@ -190,7 +190,7 @@ void test_eliminate_square_no_options() {
   try {
     eliminate(puzzle, 1, 1);
     assert(false, "no possibilities remain");
-  } catch (std::invalid_argument) {
+  } catch (std::logic_error) {
   }
 }
 
@@ -201,6 +201,25 @@ void test_eliminate() {
   assert(eliminate(puzzle), "change occurred");
   assert(puzzle[1][1].val == 2, "value of 1,1");
   assert(puzzle[1][2].val == 1, "value of 1,2");
+}
+
+void test_guess() {
+  deftest("test_guess");
+  Puzzle puzzle = make_puzzle();
+  read_puzzle(puzzle,
+              "802060040"
+              "050000803"
+              "000005700"
+              "008090000"
+              "907080504"
+              "000010600"
+              "001900300"
+              "406000050"
+              "080070402");
+  Square g = guess(puzzle);
+  assert(g.row == 0, "guess row");
+  assert(g.col == 1, "guess col");
+  assert(g.val == 1, "guess val"); 
 }
 
 int main() {
@@ -215,6 +234,7 @@ int main() {
     test_eliminate_square();
     test_eliminate_square_no_options();
     test_eliminate();
+    test_guess();
   } catch (std::logic_error err) {
     std::cout << "Test failed (" << testname() << "): "
               << err.what() << std::endl;

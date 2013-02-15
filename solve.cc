@@ -14,7 +14,7 @@ bool row_full(Row row) {
     return false;
   for (int i = 1; i < COLS; i++) {
     if (row[i].val == row[i-1].val)
-      throw std::invalid_argument("duplicate value");
+      throw std::logic_error("duplicate value");
     if (row[i].val != row[i-1].val + 1)
       return false;
   }
@@ -86,6 +86,9 @@ bool eliminate_group(Puzzle& puzzle, int row, int col) {
 }
 
 bool eliminate(Puzzle& puzzle, int row, int col) {
+  if (puzzle[row][col].val != EMPTY)
+    return false;
+
   bool changed = false;
   changed |= eliminate_row(puzzle, row, col);
   changed |= eliminate_column(puzzle, row, col);
@@ -96,7 +99,7 @@ bool eliminate(Puzzle& puzzle, int row, int col) {
     sq.possible_vals.clear();
     changed = true;
   } else if (sq.possible_vals.size() == 0) {
-    throw std::invalid_argument("no possibilities remain");
+    throw std::logic_error("no possibilities remain");
   }
   return changed;
 }
@@ -139,11 +142,22 @@ void eliminate(Puzzle& puzzle, const Square& guess) {
 }
 
 Square guess(const Puzzle& puzzle) {
-  return Square();
+  for (int i = 0; i < ROWS; i++)
+    for (int j = 0; j < COLS; j++)
+      if (puzzle[i][j].val == EMPTY) {
+        Square sq;
+        sq.row = i;
+        sq.col = j;
+        sq.val = puzzle[i][j].possible_vals.front();
+        return sq;
+      }
+  throw std::logic_error("no possible guesses");
 }
 
 Puzzle apply_guess(const Puzzle& puzzle, const Square& guess) {
-  return puzzle;
+  Puzzle guessed = puzzle;
+  guessed[guess.row][guess.col] = guess;
+  return guessed;
 }
 
 Puzzle solve(Puzzle puzzle) {
@@ -154,7 +168,7 @@ Puzzle solve(Puzzle puzzle) {
     Square sq = guess(puzzle);
     try {
       return solve(apply_guess(puzzle, sq));
-    } catch (std::invalid_argument) {
+    } catch (std::logic_error) {
       eliminate(puzzle, sq);
     }
   }
