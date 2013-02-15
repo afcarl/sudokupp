@@ -12,9 +12,12 @@ bool row_full(Row row) {
   sort(row.begin(), row.end(), sq_order);
   if (row[0].val != 1)
     return false;
-  for (int i = 1; i < COLS; i++)
+  for (int i = 1; i < COLS; i++) {
+    if (row[i].val == row[i-1].val)
+      throw std::invalid_argument("duplicate value");
     if (row[i].val != row[i-1].val + 1)
       return false;
+  }
   return true;
 }
 
@@ -141,23 +144,16 @@ Puzzle apply_guess(const Puzzle& puzzle, const Square& guess) {
 }
 
 Puzzle solve(Puzzle puzzle) {
-  // // While puzzle is not solved:
-  // while (!solved(puzzle)) {
-  //   // 1. Run elimination.
-  //   eliminate(puzzle);
-  //   if (solved(puzzle))
-  //     break;
-  //   // 2. Choose a square and make a guess.
-  //   Square sq = guess(puzzle);
-  //   try {
-  //     //    a. Attempt to solve with that guess.
-  //     //    b. If solving succeeds, return the puzzle.
-  //     return solve(apply_guess(puzzle, sq));
-  //   } catch (std::invalid_argument) {
-  //     //    c. Otherwise, eliminate that guess.
-  //     eliminate(puzzle, sq);
-  //   }
-  // }
-  eliminate_to_stable(puzzle);
+  while (!solved(puzzle)) {
+    eliminate_to_stable(puzzle);
+    if (solved(puzzle))
+      break;
+    Square sq = guess(puzzle);
+    try {
+      return solve(apply_guess(puzzle, sq));
+    } catch (std::invalid_argument) {
+      eliminate(puzzle, sq);
+    }
+  }
   return puzzle;
 }

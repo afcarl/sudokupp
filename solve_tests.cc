@@ -40,7 +40,11 @@ Row make_row(std::string row_str) {
 void test_row_full() {
   deftest("row_full");
   assert(row_full(make_row("123456789")), "full row");
-  assert(!row_full(make_row("123436789")), "duplicate value");
+  try {
+    row_full(make_row("123436789"));
+    assert(false, "duplicate value");
+  } catch (std::invalid_argument) {
+  }
   assert(!row_full(make_row("123406789")), "missing value");
 }
 
@@ -55,7 +59,11 @@ Puzzle make_col(std::string col_str, int col) {
 void test_col_full() {
   deftest("col_full");
   assert(col_full(make_col("321987456", 2), 2), "full column");
-  assert(!col_full(make_col("321987436", 2), 2), "duplicate value");
+  try {
+    col_full(make_col("321987436", 2), 2);
+    assert(false, "duplicate value");
+  } catch (std::invalid_argument) {
+  }
   assert(!col_full(make_col("321987406", 2), 2), "missing value");
 }
 
@@ -71,7 +79,11 @@ Puzzle make_group(std::string group_str, int x, int y) {
 void test_group_full() {
   deftest("group_full");
   assert(group_full(make_group("321987456", 2, 3), 2, 3), "full group");
-  assert(!group_full(make_group("321987436", 2, 3), 2, 3), "duplicate value");
+  try {
+    group_full(make_group("321987436", 2, 3), 2, 3);
+    assert(false, "duplicate value");
+  } catch (std::invalid_argument) {
+  }
   assert(!group_full(make_group("321987406", 2, 3), 2, 3), "missing value");
 }
 
@@ -205,6 +217,7 @@ int main() {
     test_eliminate_square();
     test_eliminate();
   } catch (std::logic_error err) {
-    std::cout << "Test failed: " << err.what() << std::endl;
+    std::cout << "Test failed (" << testname() << "): "
+              << err.what() << std::endl;
   }
 }

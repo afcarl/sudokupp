@@ -8,6 +8,7 @@
 Puzzle solve(Puzzle puzzle);
 
 // Determines whether a puzzle is solved.
+// Throws an invalid_argument exception if a contradiction is found.
 bool solved(const Puzzle& puzzle);
 
 // Run elimination on a puzzle.
