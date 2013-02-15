@@ -70,7 +70,16 @@ bool eliminate_column(Puzzle& puzzle, int row, int col) {
 }
 
 bool eliminate_group(Puzzle& puzzle, int row, int col) {
-  return false;
+  if (puzzle[row][col].val != EMPTY)
+    return false;
+  bool changed = false;
+  int base_row = (row / GROUP_ROWS) * GROUP_ROWS;
+  int base_col = (col / GROUP_COLS) * GROUP_COLS;
+  for (int i = base_row; i < base_row + GROUP_ROWS; i++)
+    for (int j = base_col; j < base_col + GROUP_COLS; j++)
+      if (i != row || j != col)
+        changed |= eliminate(puzzle, row, col, puzzle[i][j].val);
+  return changed;
 }
 
 bool eliminate(Puzzle& puzzle, int row, int col) {

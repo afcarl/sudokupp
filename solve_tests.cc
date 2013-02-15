@@ -143,9 +143,26 @@ void test_eliminate_column() {
 }
 
 void test_eliminate_group() {
+  deftest("eliminate_group");
+  Puzzle puzzle = make_group("123056709", 3, 3);
+  assert(puzzle[4][3].val == 0, "unknown value");
+  assert(eliminate_group(puzzle, 4, 3), "change didn't occur");
+  assert(puzzle[4][3].val == 0, "still unknown");
+  assert(puzzle[4][3].possible_vals.size() == 2, "elimination length");
+  assert(puzzle[4][3].possible_vals[0] == 4, "elimination val[0]");
+  assert(puzzle[4][3].possible_vals[1] == 8, "elimination val[1]");
+  assert(!eliminate_group(puzzle, 4, 3), "do it again---no change");
+
+  puzzle = make_group("123405678", 3, 3);
+  assert(puzzle[4][4].val == 0, "unknown value");
+  assert(eliminate_group(puzzle, 4, 4), "change occurred");
+  assert(puzzle[4][4].val == 9, "update value");
+  assert(puzzle[4][4].possible_vals.empty(), "no possibilities remain");
+  assert(!eliminate_group(puzzle, 4, 4), "again---no change occurred");
 }
 
 void test_eliminate() {
+  
 }
 
 int main() {
