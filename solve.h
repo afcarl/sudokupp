@@ -15,6 +15,11 @@ bool solved(const Puzzle& puzzle);
 // Throws an invalid_argument exception if a contradiction is found.
 bool eliminate(Puzzle& puzzle);
 
+// Repeatedly applies elimination to a puzzle until it becomes stable,
+// i.e. no further changes are possible.  Returns true if any changes
+// were made and false otherwise.
+bool eliminate_to_stable(Puzzle& puzzle);
+
 // Run elimination on a particular square.
 // Returns true if the puzzle was modified and false otherwise.
 // Throws an invalid_argument exception if a contradiction is found.

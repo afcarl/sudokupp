@@ -91,16 +91,20 @@ bool eliminate(Puzzle& puzzle, int row, int col) {
 }
 
 bool eliminate(Puzzle& puzzle) {
-  bool stable = false;
+  bool changed = false;
+  for (int i = 0; i < ROWS; i++)
+    for (int j = 0; j < COLS; j++)
+      changed |= eliminate(puzzle, i, j);
+  return changed;
+}
+
+bool eliminate_to_stable(Puzzle& puzzle) {
+  bool changed = false;
   bool ret = false;
   do {
-    bool changed = false;
-    for (int i = 0; i < ROWS; i++)
-      for (int j = 0; j < COLS; j++)
-        changed |= eliminate(puzzle, i, j);
-    stable = !changed;
+    changed = eliminate(puzzle);
     ret |= changed;
-  } while (!stable);
+  } while (changed);
   return ret;
 }
 
@@ -154,6 +158,6 @@ Puzzle solve(Puzzle puzzle) {
   //     eliminate(puzzle, sq);
   //   }
   // }
-  eliminate(puzzle);
+  eliminate_to_stable(puzzle);
   return puzzle;
 }
