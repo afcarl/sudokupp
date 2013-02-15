@@ -128,7 +128,6 @@ void test_solved() {
 void test_eliminate_row() {
   deftest("eliminate_row");
   Puzzle puzzle = make_puzzle();
-
   puzzle[3] = make_row("123056709");
   assert(puzzle[3][7].val == 0, "unknown value");
   assert(eliminate_row(puzzle, 3, 7), "change didn't occur");
@@ -137,13 +136,6 @@ void test_eliminate_row() {
   assert(puzzle[3][7].possible_vals[0] == 4, "elimination");
   assert(puzzle[3][7].possible_vals[1] == 8, "elimination");
   assert(!eliminate_row(puzzle, 3, 7), "do it again---no change");
-
-  puzzle[2] = make_row("123405678");
-  assert(puzzle[2][4].val == 0, "unknown value");
-  assert(eliminate_row(puzzle, 2, 4), "change occurred");
-  assert(puzzle[2][4].val == 9, "update value");
-  assert(puzzle[2][4].possible_vals.empty(), "no possibilities remain");
-  assert(!eliminate_row(puzzle, 2, 4), "again, no change occurred");
 }
 
 void test_eliminate_column() {
@@ -156,13 +148,6 @@ void test_eliminate_column() {
   assert(puzzle[3][4].possible_vals[0] == 4, "elimination");
   assert(puzzle[3][4].possible_vals[1] == 8, "elimination");
   assert(!eliminate_column(puzzle, 3, 4), "do it again---no change");
-
-  puzzle = make_col("123405678", 4);
-  assert(puzzle[4][4].val == 0, "unknown value");
-  assert(eliminate_column(puzzle, 4, 4), "change occurred");
-  assert(puzzle[4][4].val == 9, "update value");
-  assert(puzzle[4][4].possible_vals.empty(), "no possibilities remain");
-  assert(!eliminate_column(puzzle, 4, 4), "again---no change occurred");
 }
 
 void test_eliminate_group() {
@@ -175,13 +160,6 @@ void test_eliminate_group() {
   assert(puzzle[4][3].possible_vals[0] == 4, "elimination val[0]");
   assert(puzzle[4][3].possible_vals[1] == 8, "elimination val[1]");
   assert(!eliminate_group(puzzle, 4, 3), "do it again---no change");
-
-  puzzle = make_group("123405678", 3, 3);
-  assert(puzzle[4][4].val == 0, "unknown value");
-  assert(eliminate_group(puzzle, 4, 4), "change occurred");
-  assert(puzzle[4][4].val == 9, "update value");
-  assert(puzzle[4][4].possible_vals.empty(), "no possibilities remain");
-  assert(!eliminate_group(puzzle, 4, 4), "again---no change occurred");
 }
 
 void test_eliminate_square() {
@@ -194,6 +172,26 @@ void test_eliminate_square() {
   // requires row, column, and group elimination
   assert(eliminate(puzzle, 1, 2), "change occurred");
   assert(puzzle[1][2].val == 1, "value of 1,2");
+}
+
+void test_eliminate_square_no_options() {
+  deftest("eliminate_square_no_options");
+  Puzzle puzzle = make_puzzle();
+  read_puzzle(puzzle, 
+              "086000025"
+              "200003640"
+              "070050000"
+              "015300060"
+              "400905008"
+              "090008570"
+              "000070030"
+              "039200000"
+              "150000490");
+  try {
+    eliminate(puzzle, 1, 1);
+    assert(false, "no possibilities remain");
+  } catch (std::invalid_argument) {
+  }
 }
 
 void test_eliminate() {
@@ -215,6 +213,7 @@ int main() {
     test_eliminate_column();
     test_eliminate_group();
     test_eliminate_square();
+    test_eliminate_square_no_options();
     test_eliminate();
   } catch (std::logic_error err) {
     std::cout << "Test failed (" << testname() << "): "

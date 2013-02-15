@@ -90,6 +90,14 @@ bool eliminate(Puzzle& puzzle, int row, int col) {
   changed |= eliminate_row(puzzle, row, col);
   changed |= eliminate_column(puzzle, row, col);
   changed |= eliminate_group(puzzle, row, col);
+  Square& sq = puzzle[row][col];
+  if (sq.possible_vals.size() == 1) {
+    sq.val = sq.possible_vals.front();
+    sq.possible_vals.clear();
+    changed = true;
+  } else if (sq.possible_vals.size() == 0) {
+    throw std::invalid_argument("no possibilities remain");
+  }
   return changed;
 }
 
@@ -122,11 +130,6 @@ bool eliminate(Puzzle& puzzle, int row, int col, int val) {
       changed = true;
       break;
     }
-  }
-  if (sq.possible_vals.size() == 1) {
-    sq.val = sq.possible_vals.front();
-    sq.possible_vals.clear();
-    changed = true;
   }
   return changed;
 }
