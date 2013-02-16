@@ -1,3 +1,4 @@
 *.o
 sudoku
 run_tests
+solve_tests
