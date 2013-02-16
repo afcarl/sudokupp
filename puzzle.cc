@@ -3,9 +3,9 @@
 #include <iostream>
 #include <string>
 
-void fill(std::vector<int>& vec, int start, int end) {
+void fill(std::list<int>& list, int start, int end) {
   for (int i = start; i < end; i++)
-    vec.push_back(i);
+    list.push_back(i);
 }
 
 Puzzle make_puzzle() {

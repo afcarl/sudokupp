@@ -148,7 +148,7 @@ bool eliminate(Puzzle& puzzle) {
 bool eliminate(Puzzle& puzzle, int row, int col, int val) {
   bool changed = false;
   Square& sq = puzzle[row][col];
-  for (std::vector<int>::iterator iter = sq.possible_vals.begin();
+  for (std::list<int>::iterator iter = sq.possible_vals.begin();
        iter != sq.possible_vals.end();
        iter++) {
     if (*iter == val) {

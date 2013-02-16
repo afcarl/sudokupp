@@ -1,8 +1,9 @@
 #ifndef BOARD_H_
 #define BOARD_H_
 
-#include <vector>
 #include <ios>
+#include <list>
+#include <vector>
 
 const int EMPTY = 0;
 const int ROWS = 9;
@@ -14,7 +15,7 @@ struct Square {
   int row;
   int col;
   int val;
-  std::vector<int> possible_vals;
+  std::list<int> possible_vals;
 };
 
 typedef std::vector<Square> Row;
@@ -36,6 +37,6 @@ std::ostream& write_puzzle(const Puzzle& puzzle, std::ostream& stream);
 std::string write_puzzle(const Puzzle& puzzle);
 
 // Private:
-void fill(std::vector<int>& vec, int start, int end);
+void fill(std::list<int>& list, int start, int end);
 
 #endif

@@ -136,8 +136,8 @@ void test_eliminate_row() {
   assert(eliminate_row(puzzle, 3, 7), "change didn't occur");
   assert(puzzle[3][7].val == 0, "still unknown");
   assert(puzzle[3][7].possible_vals.size() == 2, "elimination");
-  assert(puzzle[3][7].possible_vals[0] == 4, "elimination");
-  assert(puzzle[3][7].possible_vals[1] == 8, "elimination");
+  assert(puzzle[3][7].possible_vals.front() == 4, "elimination");
+  assert(puzzle[3][7].possible_vals.back() == 8, "elimination");
   assert(!eliminate_row(puzzle, 3, 7), "do it again---no change");
 }
 
@@ -148,8 +148,8 @@ void test_eliminate_column() {
   assert(eliminate_column(puzzle, 3, 4), "change didn't occur");
   assert(puzzle[3][4].val == 0, "still unknown");
   assert(puzzle[3][4].possible_vals.size() == 2, "elimination");
-  assert(puzzle[3][4].possible_vals[0] == 4, "elimination");
-  assert(puzzle[3][4].possible_vals[1] == 8, "elimination");
+  assert(puzzle[3][4].possible_vals.front() == 4, "elimination");
+  assert(puzzle[3][4].possible_vals.back() == 8, "elimination");
   assert(!eliminate_column(puzzle, 3, 4), "do it again---no change");
 }
 
@@ -160,8 +160,8 @@ void test_eliminate_group() {
   assert(eliminate_group(puzzle, 4, 3), "change didn't occur");
   assert(puzzle[4][3].val == 0, "still unknown");
   assert(puzzle[4][3].possible_vals.size() == 2, "elimination length");
-  assert(puzzle[4][3].possible_vals[0] == 4, "elimination val[0]");
-  assert(puzzle[4][3].possible_vals[1] == 8, "elimination val[1]");
+  assert(puzzle[4][3].possible_vals.front() == 4, "elimination val.front()");
+  assert(puzzle[4][3].possible_vals.back() == 8, "elimination val.back()");
   assert(!eliminate_group(puzzle, 4, 3), "do it again---no change");
 }
 
