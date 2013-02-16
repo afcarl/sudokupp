@@ -38,7 +38,7 @@ Puzzle apply_guess(const Puzzle& puzzle, const Square& guess);
 
 // Private:
 bool sq_order(const Square& left, const Square& right);
-bool row_full(Row row);
+bool row_full(const Row& row);
 bool col_full(const Puzzle& puzzle, int col);
 bool group_full(const Puzzle& puzzle, int x, int y);
 bool eliminate_row(Puzzle& puzzle, int row, int col);

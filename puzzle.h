@@ -35,9 +35,6 @@ std::ostream& write_puzzle(const Puzzle& puzzle, std::ostream& stream);
 // Write a puzzle to a string.
 std::string write_puzzle(const Puzzle& puzzle);
 
-// Make a copy of a puzzle.
-Puzzle copy_puzzle(const Puzzle& puzzle);
-
 // Private:
 void fill(std::vector<int>& vec, int start, int end);
 

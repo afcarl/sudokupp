@@ -25,8 +25,7 @@ void print(std::vector<int> ints) {
 Row make_row(std::string row_str) {
   Row row;
   for (std::string::const_iterator ch = row_str.begin();
-       ch != row_str.end();
-       ch++) {
+       ch != row_str.end(); ch++) {
     Square sq;
     sq.row = 0;
     sq.col = 0;
@@ -105,15 +104,19 @@ void test_solved() {
                             "345678912"
                             "678912345"
                             "912345678")), "solved puzzle");
-  assert(!solved(make_puzzle("123456789"
-                             "456789123"
-                             "789123456"
-                             "234567891"
-                             "567891234"
-                             "891234567"
-                             "345678912"
-                             "678917345" // note the extra 7
-                             "912345678")), "duplicate value");
+  try {
+    solved(make_puzzle("123456789"
+                       "456789123"
+                       "789123456"
+                       "234567891"
+                       "567891234"
+                       "891234567"
+                       "345678912"
+                       "678917345" // note the extra 7
+                       "912345678"));
+    assert(false, "duplicate value");
+  } catch (std::logic_error) {
+  }
   assert(!solved(make_puzzle("123456789"
                              "456789123"
                              "789123456"

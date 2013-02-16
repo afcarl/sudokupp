@@ -9,11 +9,10 @@ void fill(std::vector<int>& vec, int start, int end) {
 }
 
 Puzzle make_puzzle() {
-  Puzzle puzzle(ROWS);
+  Puzzle puzzle;
   for (int i = 0; i < ROWS; i++) {
-    puzzle[i] = Row(COLS);
+    puzzle.push_back(Row(COLS));
     for (int j = 0; j < COLS; j++) {
-      puzzle[i][j] = Square();
       puzzle[i][j].row = i;
       puzzle[i][j].col = j;
       puzzle[i][j].val = EMPTY;
@@ -44,20 +43,13 @@ std::ostream& write_puzzle(const Puzzle& puzzle, std::ostream& stream) {
   return stream << write_puzzle(puzzle);
 }
 
-std::string write_puzzle(const Puzzle& puzzle) {
+std::string write_puzzle(const Puzzle& puz) {
   std::string puzzle_str;
-  for (int i = 0; i < ROWS; i++) {
-    for (int j = 0; j < COLS; j++)
-      puzzle_str.push_back(puzzle[i][j].val + '0');
+  for (Puzzle::const_iterator row = puz.begin(); row != puz.end(); row++) {
+    for (Row::const_iterator sq = row->begin(); sq != row->end(); sq++)
+      puzzle_str.push_back(sq->val + '0');
     puzzle_str.push_back('\n');
   }
   return puzzle_str;
 }
 
-Puzzle copy_puzzle(const Puzzle& puzzle) {
-  Puzzle blank = make_puzzle();
-  for (int i = 0; i < ROWS; i++)
-    for (int j = 0; j < COLS; j++)
-      blank[i][j] = puzzle[i][j];
-  return blank;
-}
