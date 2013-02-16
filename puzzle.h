@@ -19,7 +19,9 @@ struct Square {
 };
 
 typedef std::vector<Square> Row;
+typedef Row::const_iterator RowIter;
 typedef std::vector<Row> Puzzle;
+typedef Puzzle::const_iterator PuzzleIter;
 
 // Create an empty puzzle.
 Puzzle make_puzzle();

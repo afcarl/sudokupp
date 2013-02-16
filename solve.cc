@@ -1,5 +1,6 @@
 #include "solve.h"
 
+#include <algorithm>
 #include <stdexcept>
 #include <iostream>
 #include <cstdlib>
@@ -16,7 +17,7 @@ void fill(bool things[], int size, bool val) {
 bool row_full(const Row& row) {
   bool vals[COLS];
   fill(vals, COLS, false);
-  for (Row::const_iterator sq = row.begin(); sq != row.end(); sq++) {
+  for (RowIter sq = row.begin(); sq != row.end(); sq++) {
     if (sq->val == 0)
       return false;
     if (vals[sq->val-1])
@@ -29,7 +30,7 @@ bool row_full(const Row& row) {
 bool col_full(const Puzzle& puz, int col) {
   bool vals[ROWS];
   fill(vals, ROWS, false);
-  for (Puzzle::const_iterator row = puz.begin(); row != puz.end(); row++) {
+  for (PuzzleIter row = puz.begin(); row != puz.end(); row++) {
     const Square& sq = (*row)[col];
     if (sq.val == 0)
       return false;
@@ -104,26 +105,26 @@ bool eliminate_group(Puzzle& puzzle, int row, int col) {
   return changed;
 }
 
+bool check_for_solution(Square& sq) {
+  if (sq.possible_vals.size() == 1) {
+    sq.val = sq.possible_vals.front();
+    sq.possible_vals.clear();
+    return true;
+  } else if (sq.possible_vals.size() == 0) {
+    throw std::logic_error("no possibilities remain");
+  }
+  return false;
+}
+
 bool eliminate(Puzzle& puzzle, int row, int col) {
   if (puzzle[row][col].val != EMPTY)
     return false;
 
-  // Eliminate possible values
   bool changed = false;
   changed |= eliminate_row(puzzle, row, col);
   changed |= eliminate_column(puzzle, row, col);
   changed |= eliminate_group(puzzle, row, col);
-
-  // Check for a solution
-  Square& sq = puzzle[row][col];
-  if (sq.possible_vals.size() == 1) {
-    sq.val = sq.possible_vals.front();
-    sq.possible_vals.clear();
-    changed = true;
-  } else if (sq.possible_vals.size() == 0) {
-    throw std::logic_error("no possibilities remain");
-  }
-
+  changed |= check_for_solution(puzzle[row][col]);
   return changed;
 }
 
@@ -164,16 +165,19 @@ void eliminate(Puzzle& puzzle, const Square& guess) {
   eliminate(puzzle, guess.row, guess.col, guess.val);
 }
 
+bool has_possible_guess(const Square& sq) {
+  return sq.val == EMPTY;
+}
+
 Square guess(const Puzzle& puz) {
-  for (Puzzle::const_iterator row = puz.begin(); row != puz.end(); row++)
-    for (Row::const_iterator sq = row->begin(); sq != row->end(); sq++)
-      if (sq->val == EMPTY) {
-        Square guess;
-        guess.row = sq->row;
-        guess.col = sq->col;
-        guess.val = sq->possible_vals.front();
-        return guess;
-      }
+  for (PuzzleIter row = puz.begin(); row != puz.end(); row++) {
+    RowIter sq = find_if(row->begin(), row->end(), has_possible_guess);
+    if (sq != row->end()) {
+      Square guess = *sq;
+      guess.val = guess.possible_vals.front();
+      return guess;
+    }
+  }
   throw std::logic_error("no possible guesses");
 }
 

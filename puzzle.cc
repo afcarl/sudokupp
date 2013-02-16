@@ -43,11 +43,14 @@ std::ostream& write_puzzle(const Puzzle& puzzle, std::ostream& stream) {
   return stream << write_puzzle(puzzle);
 }
 
+char printval(const Square& sq) {
+  return sq.val + '0';
+}
+
 std::string write_puzzle(const Puzzle& puz) {
   std::string puzzle_str;
-  for (Puzzle::const_iterator row = puz.begin(); row != puz.end(); row++) {
-    for (Row::const_iterator sq = row->begin(); sq != row->end(); sq++)
-      puzzle_str.push_back(sq->val + '0');
+  for (PuzzleIter row = puz.begin(); row != puz.end(); row++) {
+    transform(row->begin(), row->end(), std::back_inserter(puzzle_str), printval);
     puzzle_str.push_back('\n');
   }
   return puzzle_str;
