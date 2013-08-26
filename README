@@ -1,0 +1,7 @@
+sudokupp
+========
+
+An over-engineered Sudoku solver, written as an exercise while reading
+"Accelerated C++" by Andrew Koenig and Barbara E. Moo.
+
+Written by Daniel Connelly <dhconnelly@gmail.com>.
